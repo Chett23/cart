@@ -3,34 +3,45 @@ import React, { Component } from 'react';
 import './App.css';
 
 import { List } from './Components/List';
-import { inventory } from './Data/data'
+import { getItems } from './Data/data';
+// import { inventory } from './Data/data'
+
 
 
 class App extends Component {
   state = {
-    cart: []
+    cart: [],
+    items: []
   }
 
+  // addToCart = (index) => () => {
+  //   if (inventory[index].qty === 0) {
+  //     const cart = [...this.state.cart, inventory[index]]
+  //     localStorage.setItem('cart', JSON.stringify(cart))
+  //     inventory[index].qty++
+  //     this.setState({
+  //       cart
+  //     })
+  //   } else {
+  //     const cart = [...this.state.cart]
+  //     localStorage.setItem('cart', JSON.stringify(cart))
+  //     inventory[index].qty++
+  //     this.setState({
+  //       cart
+  //     })
+  //   }
+  // }
+
   addToCart = (index) => () => {
-    if(inventory[index].qty === 0){
-      const cart = [...this.state.cart, inventory[index]]
-      localStorage.setItem('cart', JSON.stringify(cart))
-      inventory[index].qty++
-      this.setState({
-        cart
-      })
-    } else {
-     const cart = [...this.state.cart]
-     localStorage.setItem('cart', JSON.stringify(cart))
-     inventory[index].qty++
-     this.setState({
-       cart
-     })
-    }
+    const cart = [...this.state.cart, this.state.items[index]]
+    localStorage.setItem('cart', JSON.stringify(cart))
+    this.setState({
+      cart
+    })
   }
 
   removeFromCart = (index) => () => {
-    if (this.state.cart[index].qty > 1){
+    if (this.state.cart[index].qty > 1) {
       this.state.cart[index].qty--
       this.setState({
         cart: this.state.cart
@@ -52,26 +63,57 @@ class App extends Component {
     })
   }
 
+  async componentDidMount() {
+    try {
+      const items = await getItems()
+      this.setState({
+        items
+      })
+    } catch (err) {
+      console.log(err)
+    }
+
+    const cartJSON = localStorage.getItem('cart')
+    const cart = JSON.parse(cartJSON)
+    this.setState({
+      cart: cart || []
+    })
+  }
+
   render() {
     return (
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-        }}
-      >
-        <h1 style={{ order: '-1', width: '100%' }}>The Store</h1>
-        <List
-          items={inventory}
-          functionality={this.addToCart}
-          btnValue='Add to Cart'
-        />
-        <List
-          items={this.state.cart}
-          functionality={this.removeFromCart}
-          title='Cart'
-          btnValue='Remove item'
-        />
+      <div>
+        <header
+          style={{
+            backgroundColor: 'rgb(140,140,140)',
+            padding: '15px'
+
+          }}
+        ><h1>The Awesome Store</h1></header>
+        <div
+          style={{
+            margin: '0',
+            padding: '0',
+            height: '100%',
+            display: 'flex',
+            backgroundColor: 'rgb(200,200,200)'
+          }}
+        >
+          <List
+            items={this.state.items}
+            functionality={this.addToCart}
+            btnValue='Add to Cart'
+            title='Store'
+            style={{width: 'auto'}}
+          />
+          <List
+            items={this.state.cart}
+            functionality={this.removeFromCart}
+            title='Cart'
+            btnValue='Remove item'
+            style={{ textAlign: 'left', width: '350px', borderLeft: '1px solid black' }}
+          />
+        </div>
       </div>
     );
   }

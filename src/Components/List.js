@@ -2,7 +2,7 @@ import React from 'react';
 import Button from './Button';
 
 
-export const List = ({ items, functionality, title, btnValue }) => (
+export const List = ({ items, functionality, title, btnValue, style }) => (
   <div>
     <h4>{title}</h4>
     <ul
@@ -10,6 +10,7 @@ export const List = ({ items, functionality, title, btnValue }) => (
         display: 'flex',
         flexFlow: 'row wrap',
         listStyle: 'none',
+        ...style,
       }}
     >
       {items.map((item, i) =>
@@ -19,26 +20,26 @@ export const List = ({ items, functionality, title, btnValue }) => (
             width: '150px',
             height: '250px',
             border: '1px solid lightGrey',
-            backgroundColor: '#D2D2D2',
             margin: '5px',
+            backgroundColor: 'rgb(255,255,255)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}
         >
-          <div>
+          <div style={{ textAlign: 'center' }}>
             {item.name}
           </div>
           <div>
-            <img style={{width:'100px', height: '100px'}}src={item.img} />
+            <img style={{ width: '150px', height: '150px' }} src={item.image} />
           </div>
           <div>
-            Price: {item.price}
+            {item.price}{/*!title ? `Price: ${item.price}` : `Price: $${(item.price * item.qty).toFixed(2)}`*/}
           </div>
-          <div>
+          {/* <div>
             {!title || `Quantity: ${item.qty}`}
-          </div>
-          <Button onClick={functionality(i)}>{btnValue}</Button>
+          </div> */}
+          <Button onClick={functionality(i)} style={{ backgroundColor: 'rgb(160,160,160)', height: '30px' }}>{btnValue}</Button>
         </li>
       )}
     </ul>
