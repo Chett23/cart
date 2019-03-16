@@ -1,117 +1,104 @@
+export const getItems = () => new Promise ((resolve, reject) => {
+  fetch('HTTP://localhost:5000/items')
+    .then(cart => {
+      resolve(cart.json())
+    }).catch(reject)
+})
 
 
-export const getItems = async () => {
-  const response = await fetch("https://mysterious-savannah-64434.herokuapp.com/items")
-  return response.json()
-}
 
 
 
-// const Apple = '/images/Apple.jpg';
-// const Books = '/images/Books.jpg';
-// const Boots = '/images/Boots.jpg';
-// const ChickenNuggets = '/images/ChickenNuggets.jpg';
-// const Coat = '/images/Coat.jpg';
-// const FirePlace = '/images/FirePlace.jpg';
-// const IceCream = '/images/IceCream.jpg';
-// const Ipad = '/images/Ipad.jpg';
-// const Iphone = '/images/Iphone.jpg';
-// const Jacket = '/images/Jacket.jpg';
-// const Jewlery = '/images/Jewlery.jpg';
-// const Knowledge = '/images/Knowledge.jpg';
-// const Shirt = '/images/Shirt.jpg';
-// const Shoes = '/images/Shoes.jpg';
-// const Soda = '/images/Soda.jpg';
 
 
 // export const inventory = [
 //   {
 //     name: 'Fire Place',
-//     image: FirePlace,
+//     image: '/images/FirePlace.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'iPad',
-//     image: Ipad,
+//     image: '/images/Ipad.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'iPhone',
-//     image: Iphone,
+//     image: '/images/Iphone.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Chicken Nuggets',
-//     image: ChickenNuggets,
+//     image: '/images/ChickenNuggets.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Apples',
-//     image: Apple,
+//     image: '/images/Apple.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Ice Cream',
-//     image: IceCream,
+//     image: '/images/IceCream.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Soda',
-//     image: Soda,
+//     image: '/images/Soda.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Shoes',
-//     image: Shoes,
+//     image: '/images/Shoes.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Shirt',
-//     image: Shirt,
+//     image: '/images/Shirt.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Coat',
-//     image: Coat,
+//     image: '/images/Coat.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Jacket',
-//     image: Jacket,
+//     image: '/images/Jacket.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Boots',
-//     image: Boots,
+//     image: '/images/Boots.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Books',
-//     image: Books,
+//     image: '/images/Books.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Jewlery',
-//     image: Jewlery,
+//     image: '/images/Jewlery.jpg',
 //     price: 3.99,
 //     qty: 0
 //   },
 //   {
 //     name: 'Knowledge',
-//     image: Knowledge,
+//     image: '/images/Knowledge.jpg',
 //     price: 3.99,
 //     qty: 0
 //   }
