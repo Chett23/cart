@@ -12,7 +12,8 @@ export const addItemToCart = (item) => new Promise ((resolve, reject) => {
     body: JSON.stringify(item)
   })
     .then(response => {
-      resolve(response.json())
+      resolve(response)
+      // resolve(response.json())
     }).catch(reject)
 })
 
@@ -21,6 +22,7 @@ export const removeItemFromCart = (id) => new Promise ((resolve, reject) => {
     method: 'DELETE'
   })
     .then(cart => {
-      resolve(cart.json())
+      resolve(cart)
+      // resolve(cart.json())
     }).catch(reject)
 })

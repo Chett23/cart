@@ -10,33 +10,52 @@ import {
 import Admin from './Pages/Admin';
 import Store from './Pages/Store';
 import Tacos from './Pages/Tacos';
+import Login from './Pages/Login';
 import NotFound from './Pages/NotFound';
 
 
 class App extends Component {
+  state = {
+    path: '',
+  }
   render() {
     return (
       <div
         style={{
-          width: 'this.props.windowWidth',
-          height: 'this.props.windowHeight',
           backgroundColor: 'lightgrey',
+          height: '100%'
         }}>
         <Router>
           <ul
             style={{
               listStyle: 'none',
               display: 'inline-grid',
-              gridTemplateColumns: '10px auto 100px 100px 10px',
+              gridTemplateColumns: '20px auto 100px 100px 20px',
               width: '100%',
               backgroundColor: 'grey',
             }}>
-            <h1 style={{
-              gridColumnStart: '2',
-              gridColumnEnd: 'span 1',
-            }}
-            >The Awesome Store</h1>
-            <li>
+            <li
+              style={{
+                gridColumnStart: '2',
+                gridColumnEnd: 'span 1',
+                alignSelf: 'center'
+              }}
+            >
+              <NavLink
+                to='/'
+                style={{
+                  textDecoration: 'none',
+                  color: 'black',
+                }}
+              >
+                <h1>{`The Awesome Store`}</h1>
+              </NavLink>
+            </li>
+            <li
+              style={{
+                placeSelf: 'center'
+              }}
+            >
               <NavLink
                 to='/'
                 style={{
@@ -46,9 +65,12 @@ class App extends Component {
                   color: 'black'
                 }}
               >Home</NavLink></li>
-            <li>
+            <li
+              style={{
+                placeSelf: 'center'
+              }}>
               <NavLink
-                to='/admin'
+                to='/login'
                 style={{
                   gridColumnStart: '4',
                   gridColumnEnd: 'span 1',
@@ -60,7 +82,8 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Store} />
             <Route path="/admin" component={Admin} />
-            <Route path="/Tacos" component={Tacos} />
+            <Route path="/tacos" component={Tacos} />
+            <Route path="/login" component={Login} />
             <Route component={NotFound} />
           </Switch>
         </Router>

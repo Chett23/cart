@@ -20,39 +20,56 @@ class Admin extends Component {
     event.preventDefault();
     const itemToAdd = { 'name': this.state.nameValue, 'price': this.state.priceValue, 'image': this.state.imageValue }
     if (this.state.edit === true) {
-      itemToAdd.id = this.state.itemToEdit
+      itemToAdd._id = this.state.itemToEdit
     }
     submitToBackEnd(itemToAdd)
-      .then(inventory => {
-        this.setState({
-          items: inventory,
-          nameValue: '',
-          priceValue: '',
-          imageValue: '',
-          edit: false,
-          itemToEdit: '',
-        })
+      .then(() => {
+        getItems()
+          .then(inventory => {
+            this.setState({
+              items: inventory,
+              nameValue: '',
+              priceValue: '',
+              imageValue: '',
+              edit: false,
+              itemToEdit: '',
+            })
+          })
       })
   }
 
   editItemInInventory = (item) => () => {
-    this.setState({
-      edit: true,
-      itemToEdit: item.id,
-      nameValue: item.name,
-      priceValue: item.price,
-      imageValue: item.image,
-    })
-  }
-
-  removeFromInventory = (item) => () => {
-    removeItemFromInventory(item.id)
-      .then(inventory => {
+    getItems()
+      .then(items => {
+        const tempIndex = items.findIndex((el) => el.name === item.name)
         this.setState({
-          items: inventory
+          edit: true,
+          itemToEdit: items[tempIndex]._id,
+          nameValue: items[tempIndex].name,
+          priceValue: items[tempIndex].price,
+          imageValue: items[tempIndex].image,
         })
       })
   }
+
+  removeFromInventory = (item) => () => {
+    removeItemFromInventory(item._id)
+      .then(() => {
+        getItems()
+          .then(inventory =>
+            this.setState({
+              items: inventory
+            }))
+      })
+  }
+
+  returnToAdd = () => this.setState({
+    edit: false,
+    itemToEdit: '',
+    nameValue: '',
+    priceValue: '',
+    imageValue: '',
+  })
 
   handleChange = (event) => {
     this.setState({
@@ -75,6 +92,7 @@ class Admin extends Component {
         style={{
           display: 'flex',
           lexDirection: 'row',
+          height: '100%',
           width: '90%',
           margin: '0 auto'
         }}
@@ -85,7 +103,7 @@ class Admin extends Component {
             margin: '2%'
           }}
         >
-          <h2 style={{ textAlign: 'center' }}>Add Item to Inventory</h2>
+          {this.state.edit === true ? <h2 style={{ textAlign: 'center' }}>Edit Item in Inventory</h2> : <h2 style={{ textAlign: 'center' }}>Add Item to Inventory</h2>}
           <form
             onSubmit={this.onSubmit}
             style={{
@@ -93,40 +111,59 @@ class Admin extends Component {
               flexDirection: 'column',
             }}
           >
-            <div>
-              <label>Name: </label>
-              <input
-                type={'text'}
-                name={'nameValue'}
-                value={this.state.nameValue}
-                onChange={this.handleChange}
-                placeholder={'Item Name'}
-                style={{ width: '80%', margin: '10px', }}
-              />
+            <div style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}>
+              <div style={{ width: '20%' }}>
+                <label>Name: </label>
+              </div>
+              <div style={{ width: '80%' }}>
+                <input
+                  type={'text'}
+                  name={'nameValue'}
+                  value={this.state.nameValue}
+                  onChange={this.handleChange}
+                  placeholder={'Item Name'}
+                  style={{ width: '100%' }}
+                />
+              </div>
             </div>
-            <div>
-              <label>Price: </label>
-              <input
-                type={'text'}
-                name={'priceValue'}
-                value={this.state.priceValue}
-                onChange={this.handleChange}
-                placeholder={'Item Price'}
-                style={{ width: '81.5%', margin: '10px', }}
-              />
+            <div style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}>
+              <div style={{ width: '20%' }}>
+                <label>Price: </label>
+              </div>
+              <div style={{ width: '80%' }}>
+                <input
+                  type={'text'}
+                  name={'priceValue'}
+                  value={this.state.priceValue}
+                  onChange={this.handleChange}
+                  placeholder={'Item Price'}
+                  style={{ width: '100%' }}
+                />
+              </div>
             </div>
-            <div>
-              <label>Image Url: </label>
-              <input
-                type={'text'}
-                name={'imageValue'}
-                value={this.state.imageValue}
-                onChange={this.handleChange}
-                placeholder={'Item Url'}
-                style={{ width: '73.5%', margin: '10px', }}
-              />
+            <div style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}>
+              <div style={{ width: '20%' }}>
+                <label>Image Url: </label>
+              </div>
+              <div style={{ width: '80%' }}>
+                <input
+                  type={'text'}
+                  name={'imageValue'}
+                  value={this.state.imageValue}
+                  onChange={this.handleChange}
+                  placeholder={'Item Url'}
+                  style={{ width: '100%' }}
+                />
+              </div>
             </div>
-            <button type={'submit'} >Submit</button>
+            {this.state.edit === true
+              ?
+              <div>
+                <Button type={'submit'} style={{ width: '70%' }}>Edit Item</Button>
+                <Button onClick={this.returnToAdd} style={{ width: '30%' }}>Return to add</Button>
+              </div>
+              :
+              <Button type={'submit'} >Submit</Button>}
           </form>
         </div>
         <div
@@ -138,63 +175,14 @@ class Admin extends Component {
           <h2 style={{ textAlign: 'center' }}>Current Inventory</h2>
           <ul>
             {this.state.items.map((item, i) =>
-              <div>
-                <li key={i} style={{ margin: '5px 0px' }}>
-                  {`Name: ${item.name}, Price: ${item.price}, ID: ${item.id}`}
-                  <Button onClick={this.editItemInInventory(item)} style={{ margin: '0px 0px 0px 10px' }}>Edit</Button>
-                  <Button onClick={this.removeFromInventory(item)} style={{ margin: '0px 0px 0px 10px' }}>Remove</Button>
-                </li>
-              </div>
+              <li key={i} style={{ margin: '5px 0px' }}>
+                {`Name: ${item.name}, Price: ${item.price}, Id: ${item._id}`}
+                <Button onClick={this.editItemInInventory(item)} style={{ margin: '0px 0px 0px 10px' }}>Edit</Button>
+                <Button onClick={this.removeFromInventory(item)} style={{ margin: '0px 0px 0px 10px' }}>Remove</Button>
+              </li>
             )}
           </ul>
         </div>
-        {/* {
-          this.state.edit === true ?
-            <form
-              onSubmit={this.onSubmit}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <div>
-                <label>Name: </label>
-                <input
-                  type={'text'}
-                  name={'nameValue'}
-                  value={this.state.nameValue}
-                  onChange={this.handleChange}
-                  placeholder={'Item Name'}
-                  style={{ width: '80%', margin: '10px', }}
-                />
-              </div>
-              <div>
-                <label>Price: </label>
-                <input
-                  type={'text'}
-                  name={'priceValue'}
-                  value={this.state.priceValue}
-                  onChange={this.handleChange}
-                  placeholder={'Item Price'}
-                  style={{ width: '81.5%', margin: '10px', }}
-                />
-              </div>
-              <div>
-                <label>Image Url: </label>
-                <input
-                  type={'text'}
-                  name={'imageValue'}
-                  value={this.state.imageValue}
-                  onChange={this.handleChange}
-                  placeholder={'Item Url'}
-                  style={{ width: '73.5%', margin: '10px', }}
-                />
-              </div>
-              <button type={'submit'} >Submit</button>
-            </form>
-            :
-            <div></div>
-          } */}
       </div>
     )
   }
