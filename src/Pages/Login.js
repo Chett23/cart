@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch
-} from 'react-router-dom';
-import randomString from 'randomstring';
+// import {
+//   // BrowserRouter as Router,
+//   // Route,
+//   // Switch,
+//   Redirect
+// } from 'react-router-dom';
+import { Redirect } from 'react-router';
 
 import Button from '../Components/Button';
 import { login } from '../Data/users';
+import { newUser } from '../Data/users';
+import { auth } from '../App'
 
 
 class Login extends Component {
@@ -21,16 +24,30 @@ class Login extends Component {
   submit = (event) => {
     event.preventDefault();
     let user = {
-      name: this.state.userName,
+      userName: this.state.userName,
       password: this.state.password,
-      _id: randomString.generate(24)
     }
     if (this.state.newuser) {
-      console.log(`welcome ${user}`)
-      login(user._id)
+      console.log(`welcome ${user.userName}`)
+      newUser(user)
         .then((result) => {
           console.log(result)
         })
+    } else {
+      console.log(`welcome back ${user.userName}`)
+      login(user)
+        .then(() => {
+          auth.authenticate()
+          console.log(`is authenticated: ${auth.isAuthenticated}`)
+          if (auth.isAuthenticated) {
+            console.log('success!')
+            return (
+              <Redirect to='/admin' />
+            )
+          }
+        }).catch((err) =>
+          console.log(`is authenticated: ${auth.isAuthenticated}`)
+        )
     }
   }
 
@@ -85,7 +102,7 @@ class Login extends Component {
             </div>
             <div style={{ width: '80%' }}>
               <input
-                type={'text'}
+                type={'password'}
                 name={'password'}
                 value={this.state.password}
                 onChange={this.handleChange}

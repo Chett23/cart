@@ -42,7 +42,7 @@ export const List = ({ items, functionality, title, btnValue, style }) => (
           <div>
             {title === 'Cart' && `Quantity: ${item.qty}`}
           </div>
-        <Button onClick={functionality(item)} style={{ backgroundColor: 'rgb(160,160,160)', height: '30px' }}>{btnValue}</Button>
+        <Button onClick={functionality(item)} style={{ backgroundColor: 'rgb(160,160,160)', height: '30px', cursor: 'pointer' }}>{btnValue}</Button>
         </li>
       )
       :
