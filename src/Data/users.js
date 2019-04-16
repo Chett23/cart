@@ -1,5 +1,5 @@
 export const login = (user) => new Promise((resolve, reject) => {
-  fetch(`HTTP://localhost:5000/users`, {
+  fetch(`https://shopping-cart-api-helio.herokuapp.com/users`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user)
@@ -10,7 +10,7 @@ export const login = (user) => new Promise((resolve, reject) => {
 })
 
 export const newUser = (user) => new Promise((resolve, reject) => {
-  fetch(`HTTP://localhost:5000/users`, {
+  fetch(`https://shopping-cart-api-helio.herokuapp.com/users`, {
     method: 'POST',
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user)

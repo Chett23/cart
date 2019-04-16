@@ -28,9 +28,15 @@ class Login extends Component {
       password: this.state.password,
     }
     if (this.state.newuser) {
+      user.newUser = true
       newUser(user)
-        .then((result) => {
-          console.log(result)
+        .then((user) => {
+          console.log(user)
+          localStorage.setItem("user", JSON.stringify(user))
+          this.setState({
+            newUser: false,
+            user
+          })
         })
     } else {
       login(user)

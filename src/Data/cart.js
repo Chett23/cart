@@ -1,12 +1,12 @@
 export const getCart = () => new Promise ((resolve, reject) => {
-  fetch('HTTP://localhost:5000/cart')
+  fetch('https://shopping-cart-api-helio.herokuapp.com/cart')
     .then(cart => {
       resolve(cart.json())
     }).catch(reject)
 })
 
 export const addItemToCart = (item) => new Promise ((resolve, reject) => {
-  fetch('HTTP://localhost:5000/cart', {
+  fetch('https://shopping-cart-api-helio.herokuapp.com/cart', {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(item)
@@ -18,7 +18,7 @@ export const addItemToCart = (item) => new Promise ((resolve, reject) => {
 })
 
 export const removeItemFromCart = (id) => new Promise ((resolve, reject) => {
-  fetch(`HTTP://localhost:5000/cart/${id}`, {
+  fetch(`https://shopping-cart-api-helio.herokuapp.com/cart/${id}`, {
     method: 'DELETE'
   })
     .then(cart => {
