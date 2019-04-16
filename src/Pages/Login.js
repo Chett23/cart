@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 // import {
-//   // BrowserRouter as Router,
-//   // Route,
-//   // Switch,
-//   Redirect
+//   BrowserRouter as Router,
+//   Route,
+//   Switch,
 // } from 'react-router-dom';
 import { Redirect } from 'react-router';
 
 import Button from '../Components/Button';
 import { login } from '../Data/users';
 import { newUser } from '../Data/users';
-import { auth } from '../App'
 
 
 class Login extends Component {
   state = {
     userName: '',
     password: '',
+    user: null,
     newuser: false,
+    error: null
   }
 
 
@@ -28,29 +28,22 @@ class Login extends Component {
       password: this.state.password,
     }
     if (this.state.newuser) {
-      console.log(`welcome ${user.userName}`)
       newUser(user)
         .then((result) => {
           console.log(result)
         })
     } else {
-      console.log(`welcome back ${user.userName}`)
       login(user)
-        .then(() => {
-          auth.authenticate()
-          console.log(`is authenticated: ${auth.isAuthenticated}`)
-          if (auth.isAuthenticated) {
-            console.log('success!')
-            return (
-              <Redirect to='/admin' />
-            )
-          }
+        .then((user) => {
+          localStorage.setItem("user", JSON.stringify(user))
+          this.setState({
+            user
+          })
         }).catch((err) =>
-          console.log(`is authenticated: ${auth.isAuthenticated}`)
+          console.log(`it didnt work ${err}`)
         )
     }
   }
-
 
   handleChange = (event) => {
     this.setState({
@@ -58,8 +51,20 @@ class Login extends Component {
     })
   }
 
+  componentDidMount(){
+    let user = JSON.parse(localStorage.getItem('user'))
+    if (user){
+      this.setState({
+        user
+      })
+    }
+  }
+
   render() {
-    return (
+    return this.state.user
+      ?
+      <Redirect to='/admin' />
+      :
       <div
         style={{
           justifySelf: 'center',
@@ -82,6 +87,7 @@ class Login extends Component {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}>
+            {this.state.error && <div>{this.state.error}</div>}
             <div style={{ width: '20%' }}>
               <label>User Name: </label>
             </div>
@@ -118,7 +124,6 @@ class Login extends Component {
           <div><br /></div>
         </form>
       </div>
-    )
   }
 }
 

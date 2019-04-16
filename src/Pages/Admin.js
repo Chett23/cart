@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
+
 
 import Button from '../Components/Button';
 import { getItems } from '../Data/items';
@@ -14,28 +16,34 @@ class Admin extends Component {
     imageValue: '',
     edit: false,
     itemToEdit: '',
+    user: null,
+    loading: true
   }
 
   onSubmit = (event) => {
     event.preventDefault();
-    const itemToAdd = { 'name': this.state.nameValue, 'price': this.state.priceValue, 'image': this.state.imageValue }
-    if (this.state.edit === true) {
-      itemToAdd._id = this.state.itemToEdit
-    }
-    submitToBackEnd(itemToAdd)
-      .then(() => {
-        getItems()
-          .then(inventory => {
-            this.setState({
-              items: inventory,
-              nameValue: '',
-              priceValue: '',
-              imageValue: '',
-              edit: false,
-              itemToEdit: '',
+    if (this.state.user){
+      const itemToAdd = { 'name': this.state.nameValue, 'price': this.state.priceValue, 'image': this.state.imageValue }
+      if (this.state.edit === true) {
+        itemToAdd._id = this.state.itemToEdit
+      }
+      submitToBackEnd(itemToAdd)
+        .then(() => {
+          getItems()
+            .then(inventory => {
+              this.setState({
+                items: inventory,
+                nameValue: '',
+                priceValue: '',
+                imageValue: '',
+                edit: false,
+                itemToEdit: '',
+              })
             })
-          })
-      })
+        })
+    } else{
+      alert('You do not have the authorization, please sign in.')
+    }
   }
 
   editItemInInventory = (item) => () => {
@@ -78,16 +86,23 @@ class Admin extends Component {
   }
 
   componentDidMount() {
-    getItems()
-      .then(items => {
-        this.setState({
-          items
+    let user = JSON.parse(localStorage.getItem('user'))
+    console.log(user)
+    if (user) {
+      getItems()
+        .then(items => {
+          this.setState({
+            user,
+            loading: false,
+            items
+          })
         })
-      })
+    }
   }
 
   render() {
-    return (
+    return this.state.loading || this.state.user
+      ?
       <div
         style={{
           display: 'flex',
@@ -160,7 +175,7 @@ class Admin extends Component {
               ?
               <div>
                 <Button type={'submit'} style={{ width: '70%' }}>Edit Item</Button>
-                <Button onClick={this.returnToAdd} style={{ width: '30%' }}>Return to add</Button>
+                <Button onClick={this.returnToAdd} style={{ width: '30%' }} >Return to add</Button>
               </div>
               :
               <Button type={'submit'} >Submit</Button>}
@@ -184,7 +199,8 @@ class Admin extends Component {
           </ul>
         </div>
       </div>
-    )
+      :
+      <Redirect to='/admin/login' />
   }
 }
 

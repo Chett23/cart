@@ -4,7 +4,6 @@ import {
   BrowserRouter as Router,
   Route,
   NavLink,
-  Redirect,
   Switch
 } from 'react-router-dom';
 
@@ -20,6 +19,7 @@ class App extends Component {
   state = {
     path: '',
   }
+
   render() {
     return (
       <div
@@ -72,19 +72,19 @@ class App extends Component {
                 placeSelf: 'center'
               }}>
               <NavLink
-                to='/admin'
+                to= '/admin/login'
                 style={{
                   gridColumnStart: '4',
                   gridColumnEnd: 'span 1',
                   textDecoration: 'none',
                   color: 'black'
                 }}
-              >Admin</NavLink></li>
+              >Admin Login</NavLink></li>
           </ul>
           <Switch>
             <Route exact path="/" component={Store} />
-            <Route path="/login" component={Login} />
-            <PrivateRoute path="/admin" component={Admin} />
+            <Route path="/admin" exact component={Admin} />
+            <Route path="/admin/login" component={Login} />
             <Route path="/tacos" component={Tacos} />
             <Route component={NotFound} />
           </Switch>
@@ -92,39 +92,6 @@ class App extends Component {
       </div>
     );
   }
-}
-
-
-export const auth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true;
-    setTimeout(cb, 1000);
-  },
-  signout(cb) {
-    this.isAuthenticated = false;
-    setTimeout(cb, 1000);
-  }
-};
-
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        auth.isAuthenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: props.location }
-            }}
-          />
-        )
-      }
-    />
-  );
 }
 
 export default App;

@@ -4,8 +4,8 @@ export const login = (user) => new Promise((resolve, reject) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user)
   })
-    .then(token => {
-      resolve(token)
+    .then(user => {
+      resolve(user.json())
     }).catch(err => reject(err))
 })
 
