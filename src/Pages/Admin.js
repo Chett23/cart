@@ -22,7 +22,7 @@ class Admin extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    if (this.state.user){
+    if (this.state.user) {
       const itemToAdd = { 'name': this.state.nameValue, 'price': this.state.priceValue, 'image': this.state.imageValue }
       if (this.state.edit === true) {
         itemToAdd._id = this.state.itemToEdit
@@ -41,7 +41,7 @@ class Admin extends Component {
               })
             })
         })
-    } else{
+    } else {
       alert('You do not have the authorization, please sign in.')
     }
   }
@@ -87,7 +87,6 @@ class Admin extends Component {
 
   componentDidMount() {
     let user = JSON.parse(localStorage.getItem('user'))
-    console.log(user)
     if (user) {
       getItems()
         .then(items => {
@@ -97,6 +96,10 @@ class Admin extends Component {
             items
           })
         })
+    }else{
+      this.setState({
+        loading: false,
+      })
     }
   }
 

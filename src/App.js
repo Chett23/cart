@@ -20,13 +20,10 @@ class App extends Component {
     path: '',
   }
 
+
   render() {
     return (
-      <div
-        style={{
-          backgroundColor: 'lightgrey',
-          height: '100%'
-        }}>
+      <div>
         <Router>
           <ul
             style={{
@@ -79,7 +76,8 @@ class App extends Component {
                   textDecoration: 'none',
                   color: 'black'
                 }}
-              >Admin Login</NavLink></li>
+              >Admin Login</NavLink>
+            </li>
           </ul>
           <Switch>
             <Route exact path="/" component={Store} />
@@ -89,6 +87,7 @@ class App extends Component {
             <Route component={NotFound} />
           </Switch>
         </Router>
+        <footer style={{ textAlign: 'center', position: 'absolute', bottom: '0', width: '100%', height: '60px' }}>powered by CHDevelopment&reg;</footer>
       </div>
     );
   }

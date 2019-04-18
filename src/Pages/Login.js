@@ -31,7 +31,6 @@ class Login extends Component {
       user.newUser = true
       newUser(user)
         .then((user) => {
-          console.log(user)
           localStorage.setItem("user", JSON.stringify(user))
           this.setState({
             newUser: false,
@@ -133,4 +132,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default Login;
