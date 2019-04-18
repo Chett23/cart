@@ -1,12 +1,12 @@
 export const getItems = () => new Promise ((resolve, reject) => {
-  fetch('http://localhost:5000/items')
+  fetch('https://shopping-cart-api-helio.herokuapp.com/items')
     .then(items => {
       resolve(items.json())
     }).catch(reject)
 })
 
 export const submitToBackEnd = (item) => new Promise((resolve, reject) => {
-  fetch('http://localhost:5000/items', {
+  fetch('https://shopping-cart-api-helio.herokuapp.com/items', {
     method: 'POST',
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(item)
@@ -17,7 +17,7 @@ export const submitToBackEnd = (item) => new Promise((resolve, reject) => {
 })
 
 export const removeItemFromInventory = (id) => new Promise((resolve, reject) => {
-  fetch(`http://localhost:5000/items/${id}`, {
+  fetch(`https://shopping-cart-api-helio.herokuapp.com/${id}`, {
     method: 'DELETE',
   })
   .then(inventory => {
