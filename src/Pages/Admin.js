@@ -6,6 +6,7 @@ import Button from '../Components/Button';
 import { getItems } from '../Data/items';
 import { submitToBackEnd } from '../Data/items';
 import { removeItemFromInventory } from '../Data/items';
+import { loggout } from '../Data/users';
 
 
 class Admin extends Component {
@@ -44,6 +45,11 @@ class Admin extends Component {
     } else {
       alert('You do not have the authorization, please sign in.')
     }
+  }
+
+  logout = () => () => {
+    localStorage.removeItem('user')
+    loggout()
   }
 
   editItemInInventory = (item) => () => {
@@ -200,6 +206,7 @@ class Admin extends Component {
               </li>
             )}
           </ul>
+          <Button onClick={this.logout()} style={{width: '100%'}} >Loggout</Button>
         </div>
       </div>
       :

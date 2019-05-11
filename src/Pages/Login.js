@@ -8,7 +8,6 @@ import { Redirect } from 'react-router';
 
 import Button from '../Components/Button';
 import { login } from '../Data/users';
-import { newUser } from '../Data/users';
 
 
 class Login extends Component {
@@ -29,23 +28,28 @@ class Login extends Component {
     }
     if (this.state.newuser) {
       user.newUser = true
-      newUser(user)
-        .then((user) => {
-          localStorage.setItem("user", JSON.stringify(user))
+      login(user)
+        .then(({ userRedacted, token }) => {
+          localStorage.setItem("user", JSON.stringify(userRedacted))
           this.setState({
             newUser: false,
-            user
+            user: userRedacted,
           })
         })
     } else {
       login(user)
-        .then((user) => {
-          localStorage.setItem("user", JSON.stringify(user))
+        .then(({ userResponse, token }) => {
+          localStorage.setItem("user", JSON.stringify(userResponse))
           this.setState({
-            user
+            user: userResponse
           })
-        }).catch((err) =>
+        }).catch((err) => {
           console.log(`it didnt work ${err}`)
+          this.setState({
+            error: "Login Failed, PLease try again."
+          })
+        }
+
         )
     }
   }
@@ -56,9 +60,9 @@ class Login extends Component {
     })
   }
 
-  componentDidMount(){
+  componentDidMount() {
     let user = JSON.parse(localStorage.getItem('user'))
-    if (user){
+    if (user) {
       this.setState({
         user
       })
@@ -84,6 +88,7 @@ class Login extends Component {
         }}
       >
         <h1>Admin Login</h1>
+        {this.state.error && <span style={{ textAlign: 'center', color: 'red' }}>{this.state.error}</span>}
         <form
           onSubmit={this.submit}
           style={{
@@ -92,7 +97,6 @@ class Login extends Component {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}>
-            {this.state.error && <div>{this.state.error}</div>}
             <div style={{ width: '20%' }}>
               <label>User Name: </label>
             </div>
@@ -102,6 +106,7 @@ class Login extends Component {
                 name={'userName'}
                 value={this.state.userName}
                 onChange={this.handleChange}
+                onFocus={() => this.setState({ error: null})}
                 placeholder={'User Name . . . '}
                 style={{ width: '100%' }}
               />
@@ -117,6 +122,7 @@ class Login extends Component {
                 name={'password'}
                 value={this.state.password}
                 onChange={this.handleChange}
+                onFocus={() => this.setState({ error: null, password: '' })}
                 placeholder={'Password . . . '}
                 style={{ width: '100%' }}
               />

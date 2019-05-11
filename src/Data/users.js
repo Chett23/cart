@@ -1,8 +1,9 @@
 export const login = (user) => new Promise((resolve, reject) => {
-  fetch(`https://shopping-cart-api-helio.herokuapp.com/users`, {
+  fetch(`http://localhost:5001/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user)
+    credentials: "include",
+    body: JSON.stringify(user),
   })
     .then(user => {
       resolve(user.json())
@@ -11,15 +12,27 @@ export const login = (user) => new Promise((resolve, reject) => {
     })
 })
 
-export const newUser = (user) => new Promise((resolve, reject) => {
-  fetch(`https://shopping-cart-api-helio.herokuapp.com/users`, {
-    method: 'POST',
+export const loggout = () => new Promise ((resolve, reject) => {
+  fetch(`http://localhost:5001/loggout`,{
+    metehod: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user)
+    credentials: "include",
   })
-    .then(newLogin => {
-      resolve(newLogin.json())
-    }).catch(err => {
-      reject(err)
-    })
+  .then(()=>{
+    localStorage.removeItem('user')
+    resolve()
+  }).catch(err => reject(err))
 })
+
+// export const login = (user) => new Promise((resolve, reject) => {
+//   fetch(`https://shopping-cart-api-helio.herokuapp.com/users`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(user)
+//   })
+//     .then(user => {
+//       resolve(user.json())
+//     }).catch(err => {
+//       reject(err)
+//     })
+// })

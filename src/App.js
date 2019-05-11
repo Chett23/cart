@@ -4,7 +4,8 @@ import {
   BrowserRouter as Router,
   Route,
   NavLink,
-  Switch
+  Switch,
+  // withRouter,
 } from 'react-router-dom';
 
 
@@ -80,7 +81,7 @@ class App extends Component {
             </li>
           </ul>
           <Switch>
-            <Route exact path="/" component={Store} />
+            <Route path="/" exact component={Store} />
             <Route path="/admin" exact component={Admin} />
             <Route path="/admin/login" component={Login} />
             <Route path="/tacos" component={Tacos} />
