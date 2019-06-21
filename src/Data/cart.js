@@ -1,12 +1,12 @@
 export const getCart = () => new Promise ((resolve, reject) => {
-  fetch('http://localhost:5001/cart')
+  fetch('https://shop-v1-helio.herokuapp.com/cart')
     .then(cart => {
       resolve(cart.json())
     }).catch(reject)
 })
 
 export const addItemToCart = (item) => new Promise ((resolve, reject) => {
-  fetch('http://localhost:5001/cart', {
+  fetch('https://shop-v1-helio.herokuapp.com/cart', {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(item)
@@ -18,7 +18,7 @@ export const addItemToCart = (item) => new Promise ((resolve, reject) => {
 })
 
 export const removeItemFromCart = (id) => new Promise ((resolve, reject) => {
-  fetch(`http://localhost:5001/cart/${id}`, {
+  fetch(`https://shop-v1-helio.herokuapp.com/cart/${id}`, {
     method: 'DELETE'
   })
     .then(cart => {
@@ -26,32 +26,3 @@ export const removeItemFromCart = (id) => new Promise ((resolve, reject) => {
       // resolve(cart.json())
     }).catch(reject)
 })
-
-// export const getCart = () => new Promise ((resolve, reject) => {
-//   fetch('https://shopping-cart-api-helio.herokuapp.com/cart')
-//     .then(cart => {
-//       resolve(cart.json())
-//     }).catch(reject)
-// })
-
-// export const addItemToCart = (item) => new Promise ((resolve, reject) => {
-//   fetch('https://shopping-cart-api-helio.herokuapp.com/cart', {
-//     method: 'POST',
-//     headers: {"Content-Type": "application/json"},
-//     body: JSON.stringify(item)
-//   })
-//     .then(response => {
-//       resolve(response)
-//       // resolve(response.json())
-//     }).catch(reject)
-// })
-
-// export const removeItemFromCart = (id) => new Promise ((resolve, reject) => {
-//   fetch(`https://shopping-cart-api-helio.herokuapp.com/cart/${id}`, {
-//     method: 'DELETE'
-//   })
-//     .then(cart => {
-//       resolve(cart)
-//       // resolve(cart.json())
-//     }).catch(reject)
-// })

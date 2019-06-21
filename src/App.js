@@ -88,7 +88,6 @@ class App extends Component {
             <Route component={NotFound} />
           </Switch>
         </Router>
-        <footer style={{ textAlign: 'center', position: 'absolute', bottom: '0', width: '100%', height: '60px' }}>powered by CHDevelopment&reg;</footer>
       </div>
     );
   }
